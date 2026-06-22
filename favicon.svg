@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56 56" role="img" aria-label="SmartExitPlan">
+  <rect width="56" height="56" rx="13" fill="#1B2A4A"/>
+  <g>
+    <rect x="9"  y="37" width="7" height="11" rx="2" fill="#EDEBE4"/>
+    <rect x="20" y="30" width="7" height="18" rx="2" fill="#EDEBE4"/>
+    <rect x="31" y="22" width="7" height="26" rx="2" fill="#EDEBE4"/>
+    <rect x="42" y="14" width="7" height="34" rx="2" fill="#C8963E"/>
+    <path d="M12.5 36 L23.5 29 L34.5 21 L45.5 14" fill="none" stroke="#DDB36A" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="45.5" cy="14" r="3.5" fill="#1B2A4A" stroke="#DDB36A" stroke-width="2.1"/>
+  </g>
+</svg>

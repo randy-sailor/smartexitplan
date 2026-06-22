@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SmartExitPlan &middot; The Exit Readiness System</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<meta name="description" content="SmartExitPlan turns the business exit from a one-time gamble into a managed, seven-phase system built to close the gap between what your business is worth today and what it could command at exit." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --navy:#1B2A4A;
+    --navy-deep:#141E36;
+    --navy-soft:#2A3B5F;
+    --gold:#C8963E;
+    --gold-lt:#DDB36A;
+    --paper:#FAF8F3;
+    --sand:#F0EDE6;
+    --line:#E4DFD5;
+    --ink:#222730;
+    --gray:#6B7280;
+    --gray-lt:#8A8F99;
+    --on-navy:#EDEBE4;
+
+    --display:Georgia,"Times New Roman",serif;
+    --body:"Hanken Grotesk",Arial,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,monospace;
+
+    --maxw:1180px;
+    --gutter:clamp(20px,5vw,64px);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--body);color:var(--ink);background:var(--paper);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  img,svg{display:block;max-width:100%}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding-left:var(--gutter);padding-right:var(--gutter)}
+
+  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:500;display:inline-flex;align-items:center;gap:.6em}
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--gold);display:inline-block;opacity:.85}
+
+  h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.08;letter-spacing:-.01em;color:var(--navy)}
+  h2.section-title{font-size:clamp(1.9rem,3.9vw,3rem);margin-top:.6rem}
+  /* gold hairline under section heads, echoing the TWG gold divider */
+  .section-head .rule{height:2px;width:54px;background:var(--gold);margin-top:1.3rem;border-radius:2px}
+  p.lead{font-size:clamp(1.05rem,1.55vw,1.28rem);color:var(--gray);max-width:60ch}
+
+  /* buttons */
+  .btn{font-family:var(--body);font-weight:600;font-size:.97rem;padding:.92em 1.55em;border-radius:3px;display:inline-flex;align-items:center;gap:.55em;cursor:pointer;border:1.5px solid transparent;transition:transform .18s ease,background .2s ease,color .2s ease,border-color .2s ease;line-height:1}
+  .btn .arr{transition:transform .2s ease}
+  .btn:hover .arr{transform:translateX(3px)}
+  .btn-primary{background:var(--gold);color:var(--navy)}
+  .btn-primary:hover{background:var(--gold-lt);transform:translateY(-1px)}
+  .btn-ghost{border-color:var(--line);color:var(--navy)}
+  .btn-ghost:hover{border-color:var(--navy);transform:translateY(-1px)}
+  .btn-ghost.on-dark{border-color:rgba(237,235,228,.32);color:var(--on-navy)}
+  .btn-ghost.on-dark:hover{border-color:var(--gold);color:#fff}
+
+  /* nav */
+  header.nav{position:sticky;top:0;z-index:60;background:var(--navy);transition:box-shadow .3s ease,backdrop-filter .3s ease}
+  header.nav.scrolled{background:rgba(27,42,74,.95);backdrop-filter:blur(8px);box-shadow:0 1px 0 rgba(200,150,62,.35),0 12px 30px -20px rgba(0,0,0,.55)}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:74px}
+  .nav-links{display:flex;align-items:center;gap:2rem}
+  .nav-links a{font-size:.9rem;font-weight:500;color:var(--on-navy);opacity:.84;transition:opacity .2s ease,color .2s ease;padding:.3em 0}
+  .nav-links a:hover{opacity:1;color:var(--gold-lt)}
+  .nav-cta{padding:.7em 1.2em;font-size:.88rem}
+  .menu-btn{display:none;background:none;border:none;cursor:pointer;padding:8px;color:var(--on-navy)}
+
+  .lockup{display:flex;align-items:center;gap:.7rem}
+  .lockup .mark{width:34px;height:34px;flex:0 0 auto}
+  .lockup .word{display:flex;flex-direction:column;line-height:1}
+  .lockup .word b{font-family:var(--body);font-weight:700;font-size:1.18rem;letter-spacing:-.02em;color:var(--on-navy)}
+  .lockup .word .tag{font-family:var(--mono);font-size:.54rem;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);margin-top:.34em;opacity:.95}
+
+  /* hero */
+  .hero{background:var(--navy);color:var(--on-navy);position:relative;padding:clamp(48px,7vw,92px) 0 clamp(60px,8vw,110px);overflow:hidden}
+  .hero::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 90% at 88% 6%,rgba(200,150,62,.18),transparent 55%)}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(32px,5vw,72px);align-items:center;position:relative;z-index:2}
+  .hero h1{font-size:clamp(2.3rem,5vw,4.1rem);color:#fff;margin:1.1rem 0 1.4rem;letter-spacing:-.015em;line-height:1.06}
+  .hero h1 .accent{color:var(--gold-lt);font-style:italic;font-weight:400}
+  .hero p.sub{font-size:clamp(1.05rem,1.5vw,1.26rem);color:var(--on-navy);opacity:.86;max-width:46ch}
+  .hero-cta{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:2.2rem}
+  .hero-foot{display:flex;gap:2.4rem;margin-top:2.8rem;padding-top:1.7rem;border-top:1px solid rgba(237,235,228,.16);flex-wrap:wrap}
+  .hero-foot .stat .n{font-family:var(--display);font-weight:700;font-size:1.9rem;color:var(--gold-lt);line-height:1}
+  .hero-foot .stat .l{font-family:var(--mono);font-size:.64rem;letter-spacing:.15em;text-transform:uppercase;color:var(--on-navy);opacity:.72;margin-top:.55em}
+
+  /* climb signature */
+  .climb-card{background:linear-gradient(160deg,#243760,#18244180);background:linear-gradient(160deg,#243a64,#172340);border:1px solid rgba(200,150,62,.3);border-radius:7px;padding:26px 26px 20px;box-shadow:0 30px 60px -30px rgba(0,0,0,.6)}
+  .climb-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+  .climb-head .t{font-family:var(--mono);font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;color:var(--on-navy);opacity:.68}
+  .climb-head .v{font-family:var(--mono);font-size:.64rem;letter-spacing:.1em;color:var(--gold-lt)}
+  .climb-svg{width:100%;height:auto;margin-top:6px}
+  .climb-legend{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--on-navy);opacity:.62;margin-top:10px}
+
+  section{padding:clamp(62px,8.5vw,114px) 0}
+  .section-head{max-width:64ch}
+  .section-head p.lead{margin-top:1.2rem}
+
+  .light{background:var(--paper);color:var(--ink)}
+  .sand{background:var(--sand);color:var(--ink)}
+  .dark{background:var(--navy);color:var(--on-navy)}
+  .dark .section-title,.dark h2,.dark h3{color:#fff}
+  .dark p.lead{color:rgba(237,235,228,.82)}
+
+  /* gap cards */
+  .gap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;margin-top:3.2rem}
+  .gap-card{background:#fff;border:1px solid var(--line);border-radius:6px;padding:30px 26px;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+  .gap-card:hover{transform:translateY(-4px);box-shadow:0 22px 44px -28px rgba(27,42,74,.35);border-color:var(--gold)}
+  .gap-card .num{font-family:var(--mono);font-size:.74rem;letter-spacing:.1em;color:var(--gold);font-weight:600}
+  .gap-card h3{font-size:1.38rem;margin:.85rem 0 .7rem;line-height:1.2}
+  .gap-card p{color:var(--gray);font-size:.98rem}
+
+  .pull{margin-top:3.4rem;border-top:1px solid var(--line);padding-top:2.4rem;display:flex;gap:1.7rem;align-items:flex-start;flex-wrap:wrap}
+  .pull .big{font-family:var(--display);font-weight:700;font-size:clamp(2.6rem,6vw,4.2rem);color:var(--navy);line-height:.95;flex:0 0 auto}
+  .pull .copy{max-width:44ch;color:var(--gray);align-self:center}
+
+  /* phases */
+  .phase-intro{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,64px);align-items:end}
+  .phase-list{margin-top:3.6rem;display:flex;flex-direction:column}
+  .phase{display:grid;grid-template-columns:84px 1.5fr 2fr 1fr;gap:1.5rem;align-items:center;padding:1.7rem 0;border-top:1px solid rgba(237,235,228,.16);transition:background .2s ease}
+  .phase:last-child{border-bottom:1px solid rgba(237,235,228,.16)}
+  .phase:hover{background:rgba(200,150,62,.07)}
+  .phase .code{font-family:var(--mono);font-size:1.05rem;font-weight:600;color:var(--gold-lt)}
+  .phase .nm{font-family:var(--display);font-weight:700;font-size:1.28rem;color:#fff;line-height:1.12}
+  .phase .nm .time{display:block;font-family:var(--mono);font-weight:400;font-size:.62rem;letter-spacing:.13em;text-transform:uppercase;color:var(--on-navy);opacity:.62;margin-top:.55em}
+  .phase .out{font-size:.95rem;color:rgba(237,235,228,.82)}
+  .phase .impact{text-align:right}
+  .phase .impact .iv{font-family:var(--display);font-weight:700;font-size:1.3rem;color:var(--gold-lt)}
+  .phase .impact .il{font-family:var(--mono);font-size:.57rem;letter-spacing:.13em;text-transform:uppercase;color:var(--on-navy);opacity:.62;margin-top:.45em}
+  .phase .impact .diag{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--on-navy);opacity:.58;line-height:1.5}
+
+  /* VGA */
+  .vga-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,68px);align-items:center;margin-top:1rem}
+  .domain{display:flex;align-items:center;gap:1.1rem;padding:1.15rem 0;border-bottom:1px solid var(--line)}
+  .domain:first-child{border-top:1px solid var(--line)}
+  .domain .dc{font-family:var(--mono);font-size:.78rem;color:var(--gold);font-weight:600;flex:0 0 auto;width:2ch}
+  .domain .dn{font-family:var(--body);font-weight:600;font-size:1.04rem;flex:1;color:var(--navy)}
+  .domain .bar{flex:0 0 96px;height:6px;background:var(--line);border-radius:4px;overflow:hidden}
+  .domain .bar span{display:block;height:100%;background:var(--navy);border-radius:4px;width:0;transition:width 1.1s cubic-bezier(.2,.7,.2,1)}
+  .domain .tgt{font-family:var(--mono);font-size:.72rem;color:var(--gray);flex:0 0 auto}
+  .vga-note{background:var(--navy);color:var(--on-navy);border-radius:7px;padding:34px 32px}
+  .vga-note .eyebrow{color:var(--gold-lt)}
+  .vga-note .eyebrow::before{background:var(--gold-lt)}
+  .vga-note h3{font-family:var(--display);font-weight:700;font-size:1.6rem;color:#fff;margin:1rem 0 .9rem;line-height:1.18}
+  .vga-note p{color:rgba(237,235,228,.85);font-size:1rem}
+
+  /* tiers */
+  .tier-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;margin-top:3.2rem}
+  .tier{border-radius:7px;padding:38px 34px;border:1px solid var(--line);background:#fff;display:flex;flex-direction:column}
+  .tier.feat{background:var(--navy);border-color:var(--navy-soft);color:var(--on-navy)}
+  .tier .tt{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  .tier.feat .tt{color:var(--gold-lt)}
+  .tier h3{font-size:1.8rem;margin:.7rem 0 .3rem;color:var(--navy)}
+  .tier.feat h3{color:#fff}
+  .tier .band{font-family:var(--mono);font-size:.78rem;color:var(--gray);margin-bottom:1.3rem}
+  .tier.feat .band{color:rgba(237,235,228,.72)}
+  .tier p.desc{color:var(--gray);font-size:.98rem;margin-bottom:1.4rem}
+  .tier.feat p.desc{color:rgba(237,235,228,.85)}
+  .tier ul{list-style:none;margin-bottom:1.8rem;display:flex;flex-direction:column;gap:.7rem}
+  .tier li{position:relative;padding-left:1.5rem;font-size:.95rem;color:var(--gray)}
+  .tier.feat li{color:rgba(237,235,228,.85)}
+  .tier li::before{content:"";position:absolute;left:0;top:.55em;width:7px;height:7px;background:var(--gold);border-radius:1px;transform:rotate(45deg)}
+  .tier .btn{margin-top:auto;align-self:flex-start}
+
+  /* outcomes */
+  .out-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.3rem;margin-top:3.2rem}
+  .out-card{padding:28px 24px;border-radius:6px;background:rgba(237,235,228,.05);border:1px solid rgba(237,235,228,.15)}
+  .out-card .oc{font-family:var(--mono);font-size:.7rem;color:var(--gold-lt);letter-spacing:.1em}
+  .out-card h3{font-size:1.24rem;color:#fff;margin:.8rem 0 .55rem;line-height:1.18}
+  .out-card p{font-size:.92rem;color:rgba(237,235,228,.8)}
+  .proof{margin-top:3.6rem;padding-top:2.6rem;border-top:1px solid rgba(237,235,228,.16);display:flex;gap:1.7rem;align-items:baseline;flex-wrap:wrap}
+  .proof .pn{font-family:var(--display);font-weight:700;font-size:clamp(2.6rem,6vw,4rem);color:var(--gold-lt);line-height:.9}
+  .proof .pc{max-width:46ch;color:rgba(237,235,228,.82);align-self:center}
+
+  /* who */
+  .who-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;margin-top:3rem}
+  .who{padding:26px 24px;border-left:3px solid var(--gold);background:#fff;border-radius:0 5px 5px 0;box-shadow:0 14px 30px -26px rgba(27,42,74,.4)}
+  .who h3{font-family:var(--body);font-weight:700;font-size:1.05rem;margin-bottom:.5rem;color:var(--navy)}
+  .who p{font-size:.95rem;color:var(--gray)}
+
+  /* CTA */
+  .cta{background:var(--navy);color:var(--on-navy);text-align:center;position:relative;overflow:hidden}
+  .cta::after{content:"";position:absolute;inset:0;background:radial-gradient(80% 120% at 50% 0%,rgba(200,150,62,.2),transparent 60%);pointer-events:none}
+  .cta .wrap{position:relative;z-index:2}
+  .cta h2{font-size:clamp(2.1rem,4.6vw,3.4rem);color:#fff;max-width:20ch;margin:1.2rem auto 1.2rem}
+  .cta p{max-width:52ch;margin:0 auto 2.4rem;color:rgba(237,235,228,.85);font-size:1.1rem}
+  .cta .hero-cta{justify-content:center}
+
+  /* footer */
+  footer.site{background:var(--navy-deep);color:var(--on-navy);padding:64px 0 40px}
+  .foot-top{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:2.5rem;padding-bottom:2.6rem;border-bottom:1px solid rgba(237,235,228,.13)}
+  .foot-brand .lockup .word b{color:#fff}
+  .foot-brand p{margin-top:1.2rem;max-width:40ch;font-size:.92rem;color:rgba(237,235,228,.72)}
+  .foot-col h4{font-family:var(--mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-lt);margin-bottom:1.1rem;font-weight:500}
+  .foot-col a{display:block;font-size:.94rem;color:rgba(237,235,228,.78);margin-bottom:.7rem;transition:color .2s ease}
+  .foot-col a:hover{color:var(--gold-lt)}
+  .foot-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:2rem;flex-wrap:wrap;gap:1rem}
+  .foot-bottom .credit{font-size:.86rem;color:rgba(237,235,228,.64)}
+  .foot-bottom .credit b{color:var(--on-navy);font-weight:600}
+  .foot-bottom .legal{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;color:rgba(237,235,228,.52)}
+
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  @media(max-width:960px){
+    .hero-grid{grid-template-columns:1fr;gap:38px}
+    .phase-intro,.vga-grid,.foot-top{grid-template-columns:1fr;gap:34px}
+    .gap-grid,.out-grid,.who-grid{grid-template-columns:1fr 1fr}
+    .tier-grid{grid-template-columns:1fr}
+    .phase{grid-template-columns:60px 1fr;gap:.5rem 1rem;row-gap:.4rem}
+    .phase .out{grid-column:1/-1}
+    .phase .impact{text-align:left;grid-column:2}
+    .phase .impact .il{margin-top:.2em}
+  }
+  @media(max-width:680px){
+    .nav-links{position:fixed;inset:74px 0 auto 0;background:var(--navy);flex-direction:column;align-items:flex-start;gap:0;padding:8px var(--gutter) 24px;transform:translateY(-130%);transition:transform .32s ease;box-shadow:0 20px 40px -20px rgba(0,0,0,.6)}
+    .nav-links.open{transform:none}
+    .nav-links a{width:100%;padding:.9em 0;border-bottom:1px solid rgba(237,235,228,.1)}
+    .nav-links .nav-cta{margin-top:1rem;width:100%;justify-content:center}
+    .menu-btn{display:block}
+    .gap-grid,.out-grid,.who-grid{grid-template-columns:1fr}
+    .out-grid{gap:1rem}
+    .hero-foot{gap:1.6rem}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+    .reveal{opacity:1;transform:none}
+    .draw{stroke-dashoffset:0!important}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a href="#top" class="lockup" aria-label="SmartExitPlan home">
+      <svg class="mark" viewBox="0 0 48 48" role="img" aria-hidden="true">
+        <rect x="4" y="32" width="7" height="12" rx="2" fill="#EDEBE4"/>
+        <rect x="15" y="25" width="7" height="19" rx="2" fill="#EDEBE4"/>
+        <rect x="26" y="17" width="7" height="27" rx="2" fill="#EDEBE4"/>
+        <rect x="37" y="8" width="7" height="36" rx="2" fill="#C8963E"/>
+        <path d="M7.5 31 L18.5 24 L29.5 16 L40.5 8" fill="none" stroke="#DDB36A" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="40.5" cy="8" r="3.6" fill="#1B2A4A" stroke="#DDB36A" stroke-width="2.1"/>
+      </svg>
+      <span class="word"><b>SmartExitPlan</b><span class="tag">Exit Readiness, Systematized</span></span>
+    </a>
+    <nav class="nav-links" id="navlinks">
+      <a href="#system">The System</a>
+      <a href="#diagnostic">Diagnostic</a>
+      <a href="#tiers">Tiers</a>
+      <a href="#outcomes">Outcomes</a>
+      <a href="#start" class="btn btn-primary nav-cta">Start the assessment <span class="arr">&rarr;</span></a>
+    </nav>
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow">The Exit Readiness System</span>
+      <h1>Most owners learn what their business is really worth <span class="accent">the day they try to sell it.</span></h1>
+      <p class="sub">SmartExitPlan turns the exit from a one-time gamble into a managed, seven-phase system built to close the gap between what your business is worth today and what it could command at exit.</p>
+      <div class="hero-cta">
+        <a href="#start" class="btn btn-primary">Start your Value Gap Assessment <span class="arr">&rarr;</span></a>
+        <a href="#system" class="btn btn-ghost on-dark">See how the system works</a>
+      </div>
+      <div class="hero-foot">
+        <div class="stat"><div class="n">1.5x&ndash;3x</div><div class="l">Multiple expansion target</div></div>
+        <div class="stat"><div class="n">7</div><div class="l">Sequential phases</div></div>
+        <div class="stat"><div class="n">18&ndash;24</div><div class="l">Month engagement</div></div>
+      </div>
+    </div>
+
+    <div class="climb-card reveal">
+      <div class="climb-head">
+        <span class="t">Value built, phase by phase</span>
+        <span class="v">Today &rarr; Exit</span>
+      </div>
+      <svg class="climb-svg" viewBox="0 0 440 300" role="img" aria-label="A value climb showing enterprise value rising across the foundation, operations, growth, and excellence phases up to the exit summit.">
+        <line x1="40" y1="262" x2="420" y2="262" stroke="rgba(237,235,228,.18)" stroke-width="1"/>
+        <g>
+          <rect class="bar-rise" x="46" y="226" width="56" height="36" rx="3" fill="rgba(237,235,228,.10)" stroke="rgba(237,235,228,.25)"/>
+          <rect class="bar-rise" x="142" y="178" width="56" height="84" rx="3" fill="rgba(200,150,62,.16)" stroke="rgba(200,150,62,.45)"/>
+          <rect class="bar-rise" x="238" y="116" width="56" height="146" rx="3" fill="rgba(200,150,62,.24)" stroke="rgba(200,150,62,.55)"/>
+          <rect class="bar-rise" x="334" y="74" width="56" height="188" rx="3" fill="rgba(200,150,62,.34)" stroke="rgba(200,150,62,.72)"/>
+        </g>
+        <path class="draw" d="M74 226 L170 178 L266 116 L362 74 L398 40" fill="none" stroke="#DDB36A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle class="node" cx="398" cy="40" r="7" fill="#1B2A4A" stroke="#DDB36A" stroke-width="2.6"/>
+        <text x="398" y="26" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1.5" fill="#DDB36A">EXIT</text>
+        <g font-family="IBM Plex Mono, monospace" fill="rgba(237,235,228,.8)" font-size="10" text-anchor="middle">
+          <text x="74" y="246" fill="rgba(237,235,228,.6)">Today</text>
+          <text x="170" y="170">+$0.5&ndash;2M</text>
+          <text x="266" y="108">+$2&ndash;4M</text>
+          <text x="362" y="66">+$3&ndash;6M</text>
+        </g>
+        <g font-family="IBM Plex Mono, monospace" fill="rgba(237,235,228,.5)" font-size="10" letter-spacing="1" text-anchor="middle">
+          <text x="74" y="280">P2</text><text x="170" y="280">P3</text><text x="266" y="280">P4</text><text x="362" y="280">P5</text>
+        </g>
+      </svg>
+      <div class="climb-legend"><span>Foundation</span><span>Growth</span><span>Excellence</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUE GAP -->
+<section class="light" id="gap">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">The Value Gap</span>
+      <h2 class="section-title">The gap is invisible until it is expensive.</h2>
+      <div class="rule"></div>
+      <p class="lead">The same business can be worth dramatically more, or fail to sell at all, depending on how ready it is. Three things quietly suppress value, and all three take time to fix.</p>
+    </div>
+
+    <div class="gap-grid">
+      <div class="gap-card reveal">
+        <span class="num">01 / Owner dependence</span>
+        <h3>If it runs through you, buyers discount it.</h3>
+        <p>When customers, decisions, and know-how live with the owner, a buyer is purchasing a job, not an asset. That is the single most common reason a deal is repriced or walks.</p>
+      </div>
+      <div class="gap-card reveal">
+        <span class="num">02 / Undocumented value</span>
+        <h3>Clean financials and depth move the multiple.</h3>
+        <p>Recurring revenue, documented processes, and a second tier of management are what buyers pay a premium for. Most owners have not built and proven them yet.</p>
+      </div>
+      <div class="gap-card reveal">
+        <span class="num">03 / No runway</span>
+        <h3>Value is built in years, not the final quarter.</h3>
+        <p>Meaningful multiple expansion takes 18 to 24 months of deliberate work. The owner who starts 90 days before a sale has already left the gap on the table.</p>
+      </div>
+    </div>
+
+    <div class="pull reveal">
+      <div class="big">1.5x&ndash;3x</div>
+      <p class="copy">The multiple expansion the Exit Readiness System is built to achieve before a business ever goes to market. Not a forecast of the market. A target for the work inside your control.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SYSTEM -->
+<section class="dark" id="system">
+  <div class="wrap">
+    <div class="phase-intro">
+      <div class="section-head reveal">
+        <span class="eyebrow">The Seven Phases</span>
+        <h2 class="section-title">One system. Seven phases. Eighteen to twenty-four months.</h2>
+        <div class="rule"></div>
+      </div>
+      <p class="lead reveal">Every phase produces a specific deliverable the next phase builds on. You always know where you are, what is finished, and what it added to enterprise value.</p>
+    </div>
+
+    <div class="phase-list">
+      <div class="phase reveal">
+        <div class="code">P0</div>
+        <div class="nm">Discovery &amp; Diagnostic<span class="time">Pre-engagement</span></div>
+        <div class="out">Baseline financial, operational, legal, and ownership intake produces your Business Insights Report and an initial valuation range.</div>
+        <div class="impact"><div class="diag">Baseline<br>set</div></div>
+      </div>
+      <div class="phase reveal">
+        <div class="code">P1</div>
+        <div class="nm">Value Gap Assessment<span class="time">Month 1</span></div>
+        <div class="out">A four-domain diagnostic scores the business and quantifies the dollar value gap suppressing today's market value.</div>
+        <div class="impact"><div class="diag">Gap<br>quantified</div></div>
+      </div>
+      <div class="phase reveal">
+        <div class="code">P2</div>
+        <div class="nm">Foundation<span class="time">Months 1&ndash;3</span></div>
+        <div class="out">Legal, structural, and financial clean-up. Removes the due diligence friction that discounts a valuation or delays closing.</div>
+        <div class="impact"><div class="iv">+$0.5&ndash;2M</div><div class="il">Value impact</div></div>
+      </div>
+      <div class="phase reveal">
+        <div class="code">P3</div>
+        <div class="nm">Operations<span class="time">Months 1&ndash;6</span></div>
+        <div class="out">SOP library, KPI dashboard, and a key-person risk register that reduces the business's dependence on any one person.</div>
+        <div class="impact"><div class="iv">+$2&ndash;4M</div><div class="il">Value impact</div></div>
+      </div>
+      <div class="phase reveal">
+        <div class="code">P4</div>
+        <div class="nm">Growth<span class="time">Months 3&ndash;12</span></div>
+        <div class="out">Revenue diversification and a repeatable, documented sales engine. Lowers customer concentration and builds the infrastructure buyers pay up for.</div>
+        <div class="impact"><div class="iv">+$3&ndash;6M</div><div class="il">Value impact</div></div>
+      </div>
+      <div class="phase reveal">
+        <div class="code">P5</div>
+        <div class="nm">Excellence<span class="time">Months 6&ndash;18</span></div>
+        <div class="out">Management depth, org structure, and culture that let the business perform at a high level without the owner. The core of buyer confidence.</div>
+        <div class="impact"><div class="iv">+$1&ndash;3M</div><div class="il">Value impact</div></div>
+      </div>
+      <div class="phase reveal">
+        <div class="code">P6</div>
+        <div class="nm">Exit Preparation<span class="time">Months 18&ndash;24</span></div>
+        <div class="out">Quality of Earnings, the Confidential Information Memorandum, a buyer-ready data room, the prioritized buyer list, and the final valuation range.</div>
+        <div class="impact"><div class="diag">Deal<br>ready</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIAGNOSTIC -->
+<section class="light" id="diagnostic">
+  <div class="wrap">
+    <div class="section-head reveal" style="max-width:60ch">
+      <span class="eyebrow">Where It Starts</span>
+      <h2 class="section-title">It starts with one number: your value gap.</h2>
+      <div class="rule"></div>
+      <p class="lead">The Value Gap Assessment scores your business across four domains. Each carries a market-ready target of eighty percent or higher, and each is graded A through F so you can see exactly where value is leaking.</p>
+    </div>
+
+    <div class="vga-grid">
+      <div class="domains reveal">
+        <div class="domain"><span class="dc">01</span><span class="dn">Operational Efficiency</span><span class="bar"><span data-w="74%"></span></span><span class="tgt">Target 80%</span></div>
+        <div class="domain"><span class="dc">02</span><span class="dn">Business &amp; Ownership Strength</span><span class="bar"><span data-w="62%"></span></span><span class="tgt">Target 80%</span></div>
+        <div class="domain"><span class="dc">03</span><span class="dn">Marketing &amp; Competitive Position</span><span class="bar"><span data-w="81%"></span></span><span class="tgt">Target 80%</span></div>
+        <div class="domain"><span class="dc">04</span><span class="dn">Financial &amp; Legal Readiness</span><span class="bar"><span data-w="70%"></span></span><span class="tgt">Target 80%</span></div>
+      </div>
+
+      <div class="vga-note reveal">
+        <span class="eyebrow">Read it like a buyer</span>
+        <h3>Your lowest domain, not your average, usually decides whether a deal closes.</h3>
+        <p>A strong average hides a fatal weakness. A buyer underwrites the gap that scares them most, so the assessment surfaces the domain dragging deal certainty down and turns it into the first item on your roadmap. The scores above are illustrative of a typical pre-engagement profile.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIERS -->
+<section class="sand" id="tiers">
+  <div class="wrap">
+    <div class="section-head reveal" style="max-width:58ch">
+      <span class="eyebrow">Two Ways In</span>
+      <h2 class="section-title">Built to scale with the complexity of your business.</h2>
+      <div class="rule"></div>
+      <p class="lead">The same proven system, delivered two ways. One is guided and self-paced. One is hands-on and bespoke. Both end the same place: a business that is ready, and an owner who knows their number.</p>
+    </div>
+
+    <div class="tier-grid">
+      <div class="tier feat reveal">
+        <span class="tt">SmartExitPlan &middot; Automated</span>
+        <h3>The guided system</h3>
+        <div class="band">For lower-middle-market owners &middot; $3M&ndash;$15M revenue</div>
+        <p class="desc">The full Exit Readiness System delivered through structured, software-guided tools. You move through each phase at your pace, with the diagnostic, roadmap, and deliverable templates built in.</p>
+        <ul>
+          <li>Automated Value Gap Assessment and scorecard</li>
+          <li>Phase-by-phase roadmap with built-in deliverables</li>
+          <li>Progress tracking against your value gap</li>
+          <li>Designed to be launched without a full advisory retainer</li>
+        </ul>
+        <a href="#start" class="btn btn-primary">Start the assessment <span class="arr">&rarr;</span></a>
+      </div>
+
+      <div class="tier reveal">
+        <span class="tt">SmartExitPlan &middot; Advisory</span>
+        <h3>The bespoke engagement</h3>
+        <div class="band">For complex mid-market firms &middot; $15M&ndash;$50M+ revenue</div>
+        <p class="desc">The same system delivered hands-on by a senior advisor. Custom valuation modeling, deal structuring, and direct buyer-side preparation for businesses with multiple entities, owners, or moving parts.</p>
+        <ul>
+          <li>Advisor-led diagnostic and quantified value gap</li>
+          <li>Custom modeling and deal-structure design</li>
+          <li>Quality of Earnings, CIM, and data room support</li>
+          <li>Buyer universe development and outreach strategy</li>
+        </ul>
+        <a href="#start" class="btn btn-ghost">Request an advisory consult</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OUTCOMES -->
+<section class="dark" id="outcomes">
+  <div class="wrap">
+    <div class="section-head reveal" style="max-width:58ch">
+      <span class="eyebrow">What You Walk Away With</span>
+      <h2 class="section-title">A business that is ready, and an exit on your terms.</h2>
+      <div class="rule"></div>
+    </div>
+
+    <div class="out-grid">
+      <div class="out-card reveal"><span class="oc">01</span><h3>A number you can defend</h3><p>A supported valuation range grounded in your real financials and operations, not a hopeful guess.</p></div>
+      <div class="out-card reveal"><span class="oc">02</span><h3>A business that runs without you</h3><p>Documented processes, management depth, and reduced key-person risk that hold up under diligence.</p></div>
+      <div class="out-card reveal"><span class="oc">03</span><h3>A buyer-ready package</h3><p>Quality of Earnings, a Confidential Information Memorandum, and an indexed data room buyers expect.</p></div>
+      <div class="out-card reveal"><span class="oc">04</span><h3>A deal on your timeline</h3><p>A prioritized buyer universe and a structure that reflects what you want, not what is left when you are forced to sell.</p></div>
+    </div>
+
+    <div class="proof reveal">
+      <div class="pn">$3.2B</div>
+      <p class="pc">The methodology behind SmartExitPlan has helped create more than $3.2 billion in market value across the engagements of The Walton Group, Inc. SmartExitPlan brings that same system to a wider set of owners.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHO -->
+<section class="light" id="who">
+  <div class="wrap">
+    <div class="section-head reveal" style="max-width:56ch">
+      <span class="eyebrow">Who It Is For</span>
+      <h2 class="section-title">For the owner who wants the exit to be a decision, not an emergency.</h2>
+      <div class="rule"></div>
+    </div>
+    <div class="who-grid">
+      <div class="who reveal"><h3>Two to five years out</h3><p>You are not selling tomorrow, but you know it is coming, and you want the runway to build value before you do.</p></div>
+      <div class="who reveal"><h3>$3M to $50M in revenue</h3><p>Established, profitable, and worth protecting. Big enough that the gap is measured in millions, not rounding error.</p></div>
+      <div class="who reveal"><h3>Most of your wealth is the business</h3><p>The exit is not one transaction among many. It is the financial event that defines what comes next, and it deserves a system.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="start">
+  <div class="wrap">
+    <span class="eyebrow" style="justify-content:center">Start Here</span>
+    <h2>Find out where your value gap is today.</h2>
+    <p>The Value Gap Assessment is the first step in the system and the fastest way to see what your business is worth now, and what it could be worth at exit.</p>
+    <div class="hero-cta">
+      <a href="#" class="btn btn-primary">Start your Value Gap Assessment <span class="arr">&rarr;</span></a>
+      <a href="#" class="btn btn-ghost on-dark">Talk to an advisor</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <a href="#top" class="lockup" aria-label="SmartExitPlan home">
+          <svg class="mark" viewBox="0 0 48 48" aria-hidden="true">
+            <rect x="4" y="32" width="7" height="12" rx="2" fill="#EDEBE4"/>
+            <rect x="15" y="25" width="7" height="19" rx="2" fill="#EDEBE4"/>
+            <rect x="26" y="17" width="7" height="27" rx="2" fill="#EDEBE4"/>
+            <rect x="37" y="8" width="7" height="36" rx="2" fill="#C8963E"/>
+            <path d="M7.5 31 L18.5 24 L29.5 16 L40.5 8" fill="none" stroke="#DDB36A" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="40.5" cy="8" r="3.6" fill="#141E36" stroke="#DDB36A" stroke-width="2.1"/>
+          </svg>
+          <span class="word"><b>SmartExitPlan</b><span class="tag">Exit Readiness, Systematized</span></span>
+        </a>
+        <p>The exit, turned into a managed system. Built to close the gap between what your business is worth today and what it could command at exit.</p>
+      </div>
+      <div class="foot-col">
+        <h4>The System</h4>
+        <a href="#system">The Seven Phases</a>
+        <a href="#diagnostic">Value Gap Assessment</a>
+        <a href="#tiers">Automated &amp; Advisory</a>
+        <a href="#outcomes">Outcomes</a>
+      </div>
+      <div class="foot-col">
+        <h4>Get Started</h4>
+        <a href="#start">Start the assessment</a>
+        <a href="#start">Talk to an advisor</a>
+        <a href="#who">Is it right for me</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <div class="credit">Built on <b>The Walton Group&rsquo;s</b> Exit Readiness System &middot; The Walton Group, Inc. &middot; Advisors to Senior Leaders</div>
+      <div class="legal">&copy; 2026 SmartExitPlan &middot; SmartExitPlan.com</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const nav=document.getElementById('nav');
+  const onScroll=()=>nav.classList.toggle('scrolled',window.scrollY>40);
+  onScroll();window.addEventListener('scroll',onScroll,{passive:true});
+
+  const menuBtn=document.getElementById('menuBtn');
+  const navlinks=document.getElementById('navlinks');
+  menuBtn.addEventListener('click',()=>{const open=navlinks.classList.toggle('open');menuBtn.setAttribute('aria-expanded',open);});
+  navlinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>navlinks.classList.remove('open')));
+
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        e.target.querySelectorAll('.bar span[data-w]').forEach(s=>{s.style.width=s.dataset.w;});
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:0.16});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  window.addEventListener('load',()=>{
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+    const p=document.querySelector('.climb-svg .draw');
+    if(p){
+      const len=p.getTotalLength();
+      p.style.strokeDasharray=len;p.style.strokeDashoffset=len;
+      p.getBoundingClientRect();
+      p.style.transition='stroke-dashoffset 1.6s ease .25s';
+      p.style.strokeDashoffset=0;
+    }
+    document.querySelectorAll('.climb-svg .bar-rise').forEach((b,i)=>{
+      b.style.transformOrigin='center bottom';
+      b.style.transform='scaleY(0)';
+      b.style.transition='transform .8s cubic-bezier(.2,.7,.2,1) '+(i*.12)+'s';
+      requestAnimationFrame(()=>requestAnimationFrame(()=>{b.style.transform='scaleY(1)';}));
+    });
+  });
+</script>
+</body>
+</html>
