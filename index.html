@@ -320,6 +320,17 @@
   .form-success p{color:rgba(237,235,228,.82);max-width:48ch;margin:0 auto}
   .form-wrap{max-width:780px;margin:0 auto}
   .form-wrap.hidden{display:none}
+  /* Assessment loading state */
+  .assess-loading{display:none;text-align:center;padding:3rem 1rem}
+  .assess-loading.show{display:block}
+  .loader-ring{display:inline-block;position:relative;width:56px;height:56px;margin-bottom:1.2rem}
+  .loader-ring div{box-sizing:border-box;display:block;position:absolute;width:48px;height:48px;margin:4px;border:3px solid var(--gold);border-radius:50%;animation:loader-spin 1.2s cubic-bezier(.5,0,.5,1) infinite;border-color:var(--gold) transparent transparent transparent}
+  .loader-ring div:nth-child(1){animation-delay:-.45s}
+  .loader-ring div:nth-child(2){animation-delay:-.3s}
+  .loader-ring div:nth-child(3){animation-delay:-.15s}
+  @keyframes loader-spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+  .loader-msg{font-family:var(--body);font-size:1.1rem;color:#fff;margin:0 0 .4rem}
+  .loader-sub{font-family:var(--mono);font-size:.76rem;color:rgba(237,235,228,.5);letter-spacing:.05em}
 
   @media(max-width:680px){
     .form-grid{grid-template-columns:1fr}
@@ -835,32 +846,101 @@
   </div>
 </section>
 
-<!-- CTA + ADVISORY CONSULTATION FORM -->
+<!-- CTA + VALUATION ASSESSMENT FORM -->
 <section class="cta" id="start">
   <div class="wrap">
-    <span class="eyebrow" style="justify-content:center">Start Here</span>
-    <h2>Find out where your value gap is today.</h2>
-    <p style="max-width:52ch;margin:0 auto 0">Tell us about your business and where you are in the exit conversation. An advisor will review your submission and respond within two business days.</p>
+    <span class="eyebrow" style="justify-content:center">Free Assessment</span>
+    <h2>What's your business worth?</h2>
+    <p style="max-width:56ch;margin:0 auto 0">Enter your numbers and tell us about your industry. We will generate a preliminary valuation assessment using current market data and email you a detailed PDF within minutes.</p>
 
     <!-- Success state -->
     <div class="form-success" id="formSuccess">
       <div class="check">
         <svg viewBox="0 0 32 32" fill="none"><path d="M8 17l5 5 11-13" stroke="#DDB36A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
-      <h3>Your request has been received.</h3>
-      <p>An advisor from <a href="https://www.waltongroup.net" target="_blank" rel="noopener" style="color:var(--gold-lt);text-decoration:underline;text-underline-offset:2px">The Walton Group</a> will review your information and reach out within two business days. In the meantime, you can review the seven phases above to see what the engagement looks like.</p>
+      <h3>Your assessment is on its way.</h3>
+      <p>Check your inbox for a detailed PDF with your estimated valuation range, industry analysis, and the factors that drive your multiple. An advisor from <a href="https://www.waltongroup.net" target="_blank" rel="noopener" style="color:var(--gold-lt);text-decoration:underline;text-underline-offset:2px">The Walton Group</a> may follow up within two business days.</p>
+    </div>
+
+    <!-- Loading state -->
+    <div class="assess-loading" id="assessLoading">
+      <div class="loader-ring"><div></div><div></div><div></div></div>
+      <p class="loader-msg" id="loaderMsg">Analyzing your industry...</p>
+      <p class="loader-sub">This typically takes 20 - 30 seconds</p>
     </div>
 
     <!-- Form -->
     <div class="form-wrap" id="formWrap">
-      <form id="advisoryForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-        <input type="hidden" name="_subject" value="SmartExitPlan - New Advisory Consultation Request" />
-        <input type="hidden" name="_next" value="#" />
-        <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
-
+      <form id="assessForm">
         <div class="form-grid">
+          <!-- Business inputs -->
           <div class="form-group">
-            <label for="f-name">Your name *</label>
+            <label for="f-revenue">Annual Revenue ($) *</label>
+            <input type="text" id="f-revenue" name="revenue" placeholder="e.g., 12000000 or 12M" required />
+            <div class="err-msg">Please enter your annual revenue.</div>
+          </div>
+          <div class="form-group">
+            <label for="f-ebitda">Annual EBITDA ($) *</label>
+            <input type="text" id="f-ebitda" name="ebitda" placeholder="e.g., 2400000 or 2.4M" required />
+            <div class="err-msg">Please enter your EBITDA.</div>
+          </div>
+          <div class="form-group full">
+            <label for="f-industry">Industry</label>
+            <select id="f-industry" name="industry">
+              <option value="" disabled selected>Select your industry (or describe below)</option>
+              <option value="Aerospace & Defense">Aerospace & Defense</option>
+              <option value="Agriculture & Farming">Agriculture & Farming</option>
+              <option value="Automotive Services">Automotive Services</option>
+              <option value="Building Materials & Construction">Building Materials & Construction</option>
+              <option value="Business Services">Business Services</option>
+              <option value="Chemicals & Plastics">Chemicals & Plastics</option>
+              <option value="Consumer Products & Retail">Consumer Products & Retail</option>
+              <option value="Distribution & Wholesale">Distribution & Wholesale</option>
+              <option value="Education & Training">Education & Training</option>
+              <option value="Energy & Utilities">Energy & Utilities</option>
+              <option value="Engineering Services">Engineering Services</option>
+              <option value="Environmental Services">Environmental Services</option>
+              <option value="Financial Services">Financial Services</option>
+              <option value="Food & Beverage Manufacturing">Food & Beverage Manufacturing</option>
+              <option value="Food Service & Restaurants">Food Service & Restaurants</option>
+              <option value="Government Contracting">Government Contracting</option>
+              <option value="Healthcare Services">Healthcare Services</option>
+              <option value="Healthcare Products & Devices">Healthcare Products & Devices</option>
+              <option value="Hospitality & Lodging">Hospitality & Lodging</option>
+              <option value="Industrial Services">Industrial Services</option>
+              <option value="Information Technology">Information Technology</option>
+              <option value="Insurance">Insurance</option>
+              <option value="Logistics & Transportation">Logistics & Transportation</option>
+              <option value="Machinery & Equipment">Machinery & Equipment</option>
+              <option value="Manufacturing (General)">Manufacturing (General)</option>
+              <option value="Media & Entertainment">Media & Entertainment</option>
+              <option value="Metal Fabrication">Metal Fabrication</option>
+              <option value="Mining & Natural Resources">Mining & Natural Resources</option>
+              <option value="Packaging">Packaging</option>
+              <option value="Pharmaceuticals & Life Sciences">Pharmaceuticals & Life Sciences</option>
+              <option value="Professional Services">Professional Services</option>
+              <option value="Real Estate Services">Real Estate Services</option>
+              <option value="SaaS & Software">SaaS & Software</option>
+              <option value="Security Services">Security Services</option>
+              <option value="Staffing & Recruitment">Staffing & Recruitment</option>
+              <option value="Telecommunications">Telecommunications</option>
+              <option value="Textiles & Apparel">Textiles & Apparel</option>
+              <option value="Waste Management">Waste Management</option>
+            </select>
+            <div class="hint">If your industry is not listed, describe your business below.</div>
+          </div>
+          <div class="form-group full">
+            <label for="f-description">Or describe your business</label>
+            <textarea id="f-description" name="business_description" placeholder="What does your company do? Describe your products, services, customers, and marketplace. The more context you provide, the more accurate the industry classification and valuation range." style="min-height:80px"></textarea>
+          </div>
+
+          <!-- Divider -->
+          <div class="full" style="border-top:1px solid rgba(237,235,228,.15);margin:.6rem 0 .2rem;grid-column:1/-1"></div>
+          <div class="full" style="grid-column:1/-1"><label style="display:block;font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:-.4rem">Your Information</label></div>
+
+          <!-- Contact info -->
+          <div class="form-group">
+            <label for="f-name">Full name *</label>
             <input type="text" id="f-name" name="name" placeholder="Full name" required />
             <div class="err-msg">Please enter your name.</div>
           </div>
@@ -870,42 +950,21 @@
             <div class="err-msg">Please enter a valid email address.</div>
           </div>
           <div class="form-group">
-            <label for="f-phone">Phone</label>
-            <input type="tel" id="f-phone" name="phone" placeholder="(555) 555-5555" />
-          </div>
-          <div class="form-group">
-            <label for="f-title">Your title / role</label>
-            <input type="text" id="f-title" name="title" placeholder="e.g., Owner, CEO, Managing Partner" />
-          </div>
-          <div class="form-group">
             <label for="f-company">Company name *</label>
             <input type="text" id="f-company" name="company" placeholder="Company name" required />
             <div class="err-msg">Please enter your company name.</div>
           </div>
-          <div class="form-group full">
-            <label for="f-situation">What prompted you to reach out? *</label>
-            <textarea id="f-situation" name="situation" placeholder="Tell us what is on your mind. Are you exploring an exit for the first time? Have you had a conversation with a buyer or broker? Are you concerned about a specific area of readiness - financials, customer concentration, owner dependence, succession? The more context you share, the more useful our initial response will be." required></textarea>
-            <div class="err-msg">Please describe your situation so we can prepare a useful response.</div>
+          <div class="form-group">
+            <label for="f-phone">Phone</label>
+            <input type="tel" id="f-phone" name="phone" placeholder="(555) 555-5555" />
           </div>
-          <div class="form-group full">
-            <label for="f-referral">How did you find SmartExitPlan?</label>
-            <select id="f-referral" name="referral_source">
-              <option value="" disabled selected>Select</option>
-              <option value="Referral from advisor">Referral from an advisor</option>
-              <option value="Referral from peer/colleague">Referral from a peer or colleague</option>
-              <option value="LinkedIn">LinkedIn</option>
-              <option value="Search engine">Search engine (Google, Bing)</option>
-              <option value="Conference / event">Conference or event</option>
-              <option value="The Walton Group website">The Walton Group website</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
+
           <div class="form-check">
             <input type="checkbox" id="f-consent" name="consent" value="Yes" required />
-            <label for="f-consent">I understand this submission will be reviewed by The Walton Group, Inc. and that an advisor may contact me at the email or phone number provided. *</label>
+            <label for="f-consent">I understand this is a preliminary assessment based on market data, not a formal valuation. Results will be reviewed by The Walton Group, Inc. and an advisor may contact me. *</label>
           </div>
           <div class="form-submit">
-            <button type="submit" class="btn btn-primary" id="submitBtn">Request an advisory consultation <span class="arr">&rarr;</span></button>
+            <button type="submit" class="btn btn-primary" id="submitBtn">Generate my valuation assessment <span class="arr">&rarr;</span></button>
             <span class="note">* Required fields</span>
           </div>
         </div>
@@ -993,49 +1052,111 @@
     });
   });
 
-  /* Advisory form handling */
-  const form=document.getElementById('advisoryForm');
+  /* Assessment form handling */
+  const form=document.getElementById('assessForm');
   const formWrap=document.getElementById('formWrap');
   const formSuccess=document.getElementById('formSuccess');
+  const assessLoading=document.getElementById('assessLoading');
+  const loaderMsg=document.getElementById('loaderMsg');
   const submitBtn=document.getElementById('submitBtn');
+
+  const loadingMessages=[
+    'Analyzing your industry...',
+    'Pulling market valuation data...',
+    'Calculating multiple ranges...',
+    'Identifying value drivers...',
+    'Building your assessment...',
+    'Generating PDF report...',
+    'Almost ready...'
+  ];
 
   if(form){
     form.addEventListener('submit',function(e){
       e.preventDefault();
       let valid=true;
+
+      /* Validate required fields */
       form.querySelectorAll('[required]').forEach(el=>{
         el.classList.remove('error');
         if(!el.value.trim()||(el.type==='email'&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value))||(el.type==='checkbox'&&!el.checked)){
           el.classList.add('error');valid=false;
         }
       });
+
+      /* Validate industry: need dropdown OR description */
+      const industry=form.querySelector('[name="industry"]').value;
+      const desc=form.querySelector('[name="business_description"]').value.trim();
+      if(!industry && !desc){
+        form.querySelector('[name="industry"]').classList.add('error');
+        form.querySelector('[name="business_description"]').classList.add('error');
+        valid=false;
+      }
+
       if(!valid){
         const first=form.querySelector('.error');
         if(first)first.scrollIntoView({behavior:'smooth',block:'center'});
         return;
       }
+
+      /* Show loading state */
       submitBtn.disabled=true;
-      submitBtn.innerHTML='Submitting&hellip;';
-      const data=new FormData(form);
-      fetch(form.action,{method:'POST',body:data,headers:{'Accept':'application/json'}})
+      formWrap.classList.add('hidden');
+      assessLoading.classList.add('show');
+      assessLoading.scrollIntoView({behavior:'smooth',block:'center'});
+
+      let msgIdx=0;
+      const msgTimer=setInterval(()=>{
+        msgIdx++;
+        if(msgIdx<loadingMessages.length) loaderMsg.textContent=loadingMessages[msgIdx];
+      },4000);
+
+      /* Build payload */
+      const payload={
+        revenue:form.querySelector('[name="revenue"]').value,
+        ebitda:form.querySelector('[name="ebitda"]').value,
+        industry:industry||'',
+        business_description:desc||'',
+        name:form.querySelector('[name="name"]').value.trim(),
+        email:form.querySelector('[name="email"]').value.trim(),
+        company:form.querySelector('[name="company"]').value.trim(),
+        phone:(form.querySelector('[name="phone"]').value||'').trim()
+      };
+
+      fetch('/api/assess',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(payload)
+      })
         .then(r=>{
+          clearInterval(msgTimer);
           if(r.ok){
-            formWrap.classList.add('hidden');
+            assessLoading.classList.remove('show');
             formSuccess.classList.add('show');
             formSuccess.scrollIntoView({behavior:'smooth',block:'center'});
           }else{
-            return r.json().then(d=>{throw new Error(d.error||'Submission failed');});
+            return r.json().then(d=>{throw new Error(d.error||'Assessment failed');});
           }
         })
         .catch(err=>{
+          clearInterval(msgTimer);
+          assessLoading.classList.remove('show');
+          formWrap.classList.remove('hidden');
           submitBtn.disabled=false;
-          submitBtn.innerHTML='Request an advisory consultation <span class="arr">&rarr;</span>';
           alert('Something went wrong: '+err.message+'. Please try again or email randy@waltongroup.net directly.');
         });
     });
     form.querySelectorAll('[required]').forEach(el=>{
       el.addEventListener('input',()=>el.classList.remove('error'));
       el.addEventListener('change',()=>el.classList.remove('error'));
+    });
+    /* Clear industry/description error when either is filled */
+    form.querySelector('[name="industry"]').addEventListener('change',()=>{
+      form.querySelector('[name="industry"]').classList.remove('error');
+      form.querySelector('[name="business_description"]').classList.remove('error');
+    });
+    form.querySelector('[name="business_description"]').addEventListener('input',()=>{
+      form.querySelector('[name="industry"]').classList.remove('error');
+      form.querySelector('[name="business_description"]').classList.remove('error');
     });
   }
 </script>

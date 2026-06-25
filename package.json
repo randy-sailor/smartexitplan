@@ -1,0 +1,11 @@
+{
+  "name": "smartexitplan",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "pdf-lib": "^1.17.1",
+    "resend": "^4.1.0"
+  }
+}
