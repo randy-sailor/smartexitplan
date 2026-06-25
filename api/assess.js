@@ -174,7 +174,7 @@ async function generatePDF(analysis, inputs) {
   const helv = await doc.embedFont(StandardFonts.Helvetica);
   const helvB = await doc.embedFont(StandardFonts.HelveticaBold);
   const times = await doc.embedFont(StandardFonts.TimesRoman);
-  const timesB = await doc.embedFont(StandardFonts.TimesBold);
+  const timesB = await doc.embedFont(StandardFonts.TimesRomanBold);
   const courier = await doc.embedFont(StandardFonts.Courier);
 
   const margin = ((inputs.ebitda / inputs.revenue) * 100).toFixed(1);
@@ -337,7 +337,7 @@ async function generatePDF(analysis, inputs) {
   y3 -= 15;
   for (const f of (analysis.multiple_drivers.expanding_factors || []).slice(0, 4)) {
     if (y3 < 80) break;
-    p3.drawText('▲', { x: ML, y: y3, size: 7, font: helv, color: GREEN });
+    p3.drawText('+', { x: ML, y: y3, size: 7, font: helv, color: GREEN });
     p3.drawText(f.factor, { x: ML + 14, y: y3, size: 9.5, font: helvB, color: NAVY });
     const impactW = courier.widthOfTextAtSize(f.typical_impact, 7.5);
     p3.drawText(f.typical_impact, { x: ML + CW - impactW, y: y3, size: 7.5, font: courier, color: GREEN });
@@ -353,7 +353,7 @@ async function generatePDF(analysis, inputs) {
     y3 -= 15;
     for (const f of (analysis.multiple_drivers.compressing_factors || []).slice(0, 4)) {
       if (y3 < 60) break;
-      p3.drawText('▼', { x: ML, y: y3, size: 7, font: helv, color: RED });
+      p3.drawText('-', { x: ML, y: y3, size: 7, font: helv, color: RED });
       p3.drawText(f.factor, { x: ML + 14, y: y3, size: 9.5, font: helvB, color: NAVY });
       const impW = courier.widthOfTextAtSize(f.typical_impact, 7.5);
       p3.drawText(f.typical_impact, { x: ML + CW - impW, y: y3, size: 7.5, font: courier, color: RED });
@@ -390,7 +390,7 @@ async function generatePDF(analysis, inputs) {
     'Exit Preparation - positioning, packaging, and process management through close'
   ];
   for (const phase of phases) {
-    p4.drawText('→', { x: ML + 2, y: y4, size: 10, font: helv, color: GOLD });
+    p4.drawText('>', { x: ML + 2, y: y4, size: 10, font: helv, color: GOLD });
     y4 = drawWrapped(p4, phase, ML + 16, y4, { font: helv, fontSize: 9.5, color: BLACK, maxWidth: CW - 16, lineHeight: 13 });
     y4 -= 7;
   }
