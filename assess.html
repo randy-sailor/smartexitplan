@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>SmartExitPlan &middot; Free Valuation Assessment</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="description" content="Get a free preliminary valuation assessment for your business using current market data. Enter your financials and receive a detailed PDF report within minutes."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+  :root{
+    --navy:#1B2A4A;
+    --navy-deep:#141E36;
+    --navy-soft:#2A3B5F;
+    --gold:#C8963E;
+    --gold-lt:#DDB36A;
+    --paper:#FAF8F3;
+    --sand:#F0EDE6;
+    --line:#E4DFD5;
+    --ink:#222730;
+    --gray:#6B7280;
+    --gray-lt:#8A8F99;
+    --on-navy:#EDEBE4;
+    --display:Georgia,"Times New Roman",serif;
+    --body:"Hanken Grotesk",Arial,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,monospace;
+    --maxw:1180px;
+    --gutter:clamp(20px,5vw,64px);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--body);color:var(--ink);background:var(--paper);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  img,svg{display:block;max-width:100%}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding-left:var(--gutter);padding-right:var(--gutter)}
+  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:500;display:inline-flex;align-items:center;gap:.6em}
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--gold);display:inline-block;opacity:.85}
+  h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.08;letter-spacing:-.01em;color:var(--navy)}
+  h2.section-title{font-size:clamp(1.9rem,3.9vw,3rem);margin-top:.6rem}
+  p.lead{font-size:clamp(1.05rem,1.55vw,1.28rem);color:var(--gray);max-width:60ch}
+
+  /* Buttons */
+  .btn{font-family:var(--body);font-weight:600;font-size:.97rem;padding:.92em 1.55em;border-radius:3px;display:inline-flex;align-items:center;gap:.55em;cursor:pointer;border:1.5px solid transparent;transition:transform .18s ease,background .2s ease,color .2s ease,border-color .2s ease;line-height:1}
+  .btn .arr{transition:transform .2s ease}
+  .btn:hover .arr{transform:translateX(3px)}
+  .btn-primary{background:var(--gold);color:var(--navy)}
+  .btn-primary:hover{background:var(--gold-lt);transform:translateY(-1px)}
+  .btn-ghost{border-color:var(--line);color:var(--navy)}
+  .btn-ghost:hover{border-color:var(--navy);transform:translateY(-1px)}
+  .btn-ghost.on-dark{border-color:rgba(237,235,228,.32);color:var(--on-navy)}
+  .btn-ghost.on-dark:hover{border-color:var(--gold);color:#fff}
+
+  /* Nav */
+  header.nav{position:sticky;top:0;z-index:60;background:var(--navy);transition:box-shadow .3s ease,backdrop-filter .3s ease}
+  header.nav.scrolled{background:rgba(27,42,74,.95);backdrop-filter:blur(8px);box-shadow:0 1px 0 rgba(200,150,62,.35),0 12px 30px -20px rgba(0,0,0,.55)}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:74px}
+  .nav-links{display:flex;align-items:center;gap:2rem}
+  .nav-links a{font-size:.9rem;font-weight:500;color:var(--on-navy);opacity:.84;transition:opacity .2s ease,color .2s ease;padding:.3em 0}
+  .nav-links a:hover{opacity:1;color:var(--gold-lt)}
+  .nav-cta{padding:.7em 1.2em;font-size:.88rem}
+  .menu-btn{display:none;background:none;border:none;cursor:pointer;padding:8px;color:var(--on-navy)}
+  .lockup{display:flex;align-items:center;gap:.7rem}
+  .lockup .mark{width:34px;height:34px;flex:0 0 auto}
+  .lockup .word{display:flex;flex-direction:column;line-height:1}
+  .lockup .word b{font-family:var(--body);font-weight:700;font-size:1.18rem;letter-spacing:-.02em;color:var(--on-navy)}
+  .lockup .word .tag{font-family:var(--mono);font-size:.54rem;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);margin-top:.34em;opacity:.95}
+
+  /* Sections */
+  section{padding:clamp(62px,8.5vw,114px) 0}
+  .dark{background:var(--navy);color:var(--on-navy)}
+  .dark h2,.dark h3{color:#fff}
+
+  /* CTA */
+  .cta{background:var(--navy);color:var(--on-navy);text-align:center;position:relative;overflow:hidden}
+  .cta::after{content:"";position:absolute;inset:0;background:radial-gradient(80% 120% at 50% 0%,rgba(200,150,62,.2),transparent 60%);pointer-events:none}
+  .cta .wrap{position:relative;z-index:2}
+  .cta h2{font-size:clamp(2.1rem,4.6vw,3.4rem);color:#fff;max-width:20ch;margin:1.2rem auto 1.2rem}
+  .cta p{max-width:52ch;margin:0 auto 2.4rem;color:rgba(237,235,228,.85);font-size:1.1rem}
+
+  /* Form */
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem 1.6rem;margin-top:2.6rem;text-align:left}
+  .form-grid .full{grid-column:1/-1}
+  .form-group label{display:block;font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-lt);font-weight:500;margin-bottom:.5rem}
+  .form-group input,.form-group select,.form-group textarea{width:100%;font-family:var(--body);font-size:.96rem;padding:.82em 1em;border-radius:4px;border:1px solid rgba(237,235,228,.22);background:rgba(237,235,228,.08);color:#fff;transition:border-color .2s ease,background .2s ease;line-height:1.5}
+  .form-group input::placeholder,.form-group textarea::placeholder{color:rgba(237,235,228,.42)}
+  .form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--gold);background:rgba(237,235,228,.12)}
+  .form-group select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1.5l5 5 5-5' stroke='%23DDB36A' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1em center;padding-right:2.6em;cursor:pointer}
+  .form-group select option{background:var(--navy);color:var(--on-navy)}
+  .form-group textarea{resize:vertical;min-height:110px}
+  .form-group .hint{font-size:.82rem;color:rgba(237,235,228,.56);margin-top:.4rem}
+  .form-group input.error,.form-group select.error,.form-group textarea.error{border-color:#e53935}
+  .form-group .err-msg{font-size:.78rem;color:#ef9a9a;margin-top:.3rem;display:none}
+  .form-group input.error~.err-msg,.form-group select.error~.err-msg,.form-group textarea.error~.err-msg{display:block}
+  .form-check{display:flex;gap:.7rem;align-items:flex-start;grid-column:1/-1;margin-top:.4rem}
+  .form-check input[type="checkbox"]{width:18px;height:18px;margin-top:.15em;accent-color:var(--gold);flex:0 0 auto;cursor:pointer}
+  .form-check label{font-family:var(--body);font-size:.9rem;color:rgba(237,235,228,.78);text-transform:none;letter-spacing:0;cursor:pointer}
+  .form-submit{grid-column:1/-1;margin-top:.6rem;display:flex;align-items:center;gap:1.4rem;flex-wrap:wrap}
+  .form-submit .btn{min-width:220px;justify-content:center}
+  .form-submit .note{font-size:.84rem;color:rgba(237,235,228,.56)}
+  .form-success{display:none;text-align:center;padding:3rem 1rem}
+  .form-success.show{display:block}
+  .form-success .check{width:64px;height:64px;margin:0 auto 1.6rem;border-radius:50%;background:rgba(200,150,62,.2);display:flex;align-items:center;justify-content:center}
+  .form-success .check svg{width:32px;height:32px}
+  .form-success h3{font-size:1.6rem;color:#fff;margin-bottom:.8rem}
+  .form-success p{color:rgba(237,235,228,.82);max-width:48ch;margin:0 auto}
+  .form-wrap{max-width:780px;margin:0 auto}
+  .form-wrap.hidden{display:none}
+
+  /* Assessment loading */
+  .assess-loading{display:none;text-align:center;padding:3rem 1rem}
+  .assess-loading.show{display:block}
+  .loader-ring{display:inline-block;position:relative;width:56px;height:56px;margin-bottom:1.2rem}
+  .loader-ring div{box-sizing:border-box;display:block;position:absolute;width:48px;height:48px;margin:4px;border:3px solid var(--gold);border-radius:50%;animation:loader-spin 1.2s cubic-bezier(.5,0,.5,1) infinite;border-color:var(--gold) transparent transparent transparent}
+  .loader-ring div:nth-child(1){animation-delay:-.45s}
+  .loader-ring div:nth-child(2){animation-delay:-.3s}
+  .loader-ring div:nth-child(3){animation-delay:-.15s}
+  @keyframes loader-spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+  .loader-msg{font-family:var(--body);font-size:1.1rem;color:#fff;margin:0 0 .4rem}
+  .loader-sub{font-family:var(--mono);font-size:.76rem;color:rgba(237,235,228,.5);letter-spacing:.05em}
+
+  /* Footer */
+  footer.site{background:var(--navy-deep);color:var(--on-navy);padding:64px 0 40px}
+  .foot-top{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:2.5rem;padding-bottom:2.6rem;border-bottom:1px solid rgba(237,235,228,.13)}
+  .foot-brand .lockup .word b{color:#fff}
+  .foot-brand p{margin-top:1.2rem;max-width:40ch;font-size:.92rem;color:rgba(237,235,228,.72)}
+  .foot-col h4{font-family:var(--mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-lt);margin-bottom:1.1rem;font-weight:500}
+  .foot-col a{display:block;font-size:.94rem;color:rgba(237,235,228,.78);margin-bottom:.7rem;transition:color .2s ease}
+  .foot-col a:hover{color:var(--gold-lt)}
+  .foot-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:2rem;flex-wrap:wrap;gap:1rem}
+  .foot-bottom .credit{font-size:.86rem;color:rgba(237,235,228,.64)}
+  .foot-bottom .credit b{color:var(--on-navy);font-weight:600}
+  .foot-bottom .legal{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;color:rgba(237,235,228,.52)}
+
+  /* Mobile responsive */
+  @media(max-width:960px){
+    .foot-top{grid-template-columns:1fr;gap:34px}
+  }
+  @media(max-width:680px){
+    .nav-links{position:fixed;inset:74px 0 auto 0;background:var(--navy);flex-direction:column;align-items:flex-start;gap:0;padding:8px var(--gutter) 24px;transform:translateY(-130%);transition:transform .32s ease;box-shadow:0 20px 40px -20px rgba(0,0,0,.6)}
+    .nav-links.open{transform:none}
+    .nav-links a{width:100%;padding:.9em 0;border-bottom:1px solid rgba(237,235,228,.1)}
+    .nav-links .nav-cta{margin-top:1rem;width:100%;justify-content:center}
+    .menu-btn{display:block}
+    .form-grid{grid-template-columns:1fr}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  }
+  </style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a href="/" class="lockup" aria-label="SmartExitPlan home">
+      <svg class="mark" viewBox="0 0 48 48" role="img" aria-hidden="true">
+        <rect x="4" y="32" width="7" height="12" rx="2" fill="#EDEBE4"/>
+        <rect x="15" y="25" width="7" height="19" rx="2" fill="#EDEBE4"/>
+        <rect x="26" y="17" width="7" height="27" rx="2" fill="#EDEBE4"/>
+        <rect x="37" y="8" width="7" height="36" rx="2" fill="#C8963E"/>
+        <path d="M7.5 31 L18.5 24 L29.5 16 L40.5 8" fill="none" stroke="#DDB36A" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="40.5" cy="8" r="3.6" fill="#1B2A4A" stroke="#DDB36A" stroke-width="2.1"/>
+      </svg>
+      <span class="word"><b>SmartExitPlan</b><span class="tag">Exit Readiness, Systematized</span></span>
+    </a>
+    <nav class="nav-links" id="navlinks">
+      <a href="/#system">The System</a>
+      <a href="/#diagnostic">Diagnostic</a>
+      <a href="/#tiers">Tiers</a>
+      <a href="/#outcomes">Outcomes</a>
+      <a href="/assess" class="btn btn-primary nav-cta">Start the assessment <span class="arr">&rarr;</span></a>
+    </nav>
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
+    </button>
+  </div>
+</header>
+
+<section class="cta" id="assess" style="padding-top:clamp(48px,7vw,92px)">
+  <div class="wrap">
+    <span class="eyebrow" style="justify-content:center">Free Assessment</span>
+    <h2>What is your business worth?</h2>
+    <p style="max-width:56ch;margin:0 auto 0">Enter your numbers and tell us about your industry. We will generate a preliminary valuation assessment using current market data and email you a detailed PDF within minutes.</p>
+
+    <!-- Success state -->
+    <div class="form-success" id="formSuccess">
+      <div class="check">
+        <svg viewBox="0 0 32 32" fill="none"><path d="M8 17l5 5 11-13" stroke="#DDB36A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h3>Your assessment is on its way.</h3>
+      <p>Check your inbox for a detailed PDF with your estimated valuation range, industry analysis, and the factors that drive your multiple. An advisor from <a href="https://www.waltongroup.net" target="_blank" rel="noopener" style="color:var(--gold-lt);text-decoration:underline;text-underline-offset:2px">The Walton Group</a> may follow up within two business days.</p>
+    </div>
+
+    <!-- Loading state -->
+    <div class="assess-loading" id="assessLoading">
+      <div class="loader-ring"><div></div><div></div><div></div></div>
+      <p class="loader-msg" id="loaderMsg">Analyzing your industry...</p>
+      <p class="loader-sub">This typically takes 20 - 30 seconds</p>
+    </div>
+
+    <!-- Form -->
+    <div class="form-wrap" id="formWrap">
+      <form id="assessForm">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="f-revenue">Annual Revenue ($) *</label>
+            <input type="text" id="f-revenue" name="revenue" placeholder="e.g., 12000000 or 12M" required />
+            <div class="err-msg">Please enter your annual revenue.</div>
+          </div>
+          <div class="form-group">
+            <label for="f-ebitda">Annual EBITDA ($) *</label>
+            <input type="text" id="f-ebitda" name="ebitda" placeholder="e.g., 2400000 or 2.4M" required />
+            <div class="err-msg">Please enter your EBITDA.</div>
+          </div>
+          <div class="form-group full">
+            <label for="f-industry">Industry</label>
+            <select id="f-industry" name="industry">
+              <option value="" disabled selected>Select your industry (or describe below)</option>
+              <option value="Aerospace &amp; Defense">Aerospace &amp; Defense</option>
+              <option value="Agriculture &amp; Farming">Agriculture &amp; Farming</option>
+              <option value="Automotive Services">Automotive Services</option>
+              <option value="Building Materials &amp; Construction">Building Materials &amp; Construction</option>
+              <option value="Business Services">Business Services</option>
+              <option value="Chemicals &amp; Plastics">Chemicals &amp; Plastics</option>
+              <option value="Consumer Products &amp; Retail">Consumer Products &amp; Retail</option>
+              <option value="Distribution &amp; Wholesale">Distribution &amp; Wholesale</option>
+              <option value="Education &amp; Training">Education &amp; Training</option>
+              <option value="Energy &amp; Utilities">Energy &amp; Utilities</option>
+              <option value="Engineering Services">Engineering Services</option>
+              <option value="Environmental Services">Environmental Services</option>
+              <option value="Financial Services">Financial Services</option>
+              <option value="Food &amp; Beverage Manufacturing">Food &amp; Beverage Manufacturing</option>
+              <option value="Food Service &amp; Restaurants">Food Service &amp; Restaurants</option>
+              <option value="Government Contracting">Government Contracting</option>
+              <option value="Healthcare Services">Healthcare Services</option>
+              <option value="Healthcare Products &amp; Devices">Healthcare Products &amp; Devices</option>
+              <option value="Hospitality &amp; Lodging">Hospitality &amp; Lodging</option>
+              <option value="Industrial Services">Industrial Services</option>
+              <option value="Information Technology">Information Technology</option>
+              <option value="Insurance">Insurance</option>
+              <option value="Logistics &amp; Transportation">Logistics &amp; Transportation</option>
+              <option value="Machinery &amp; Equipment">Machinery &amp; Equipment</option>
+              <option value="Manufacturing (General)">Manufacturing (General)</option>
+              <option value="Media &amp; Entertainment">Media &amp; Entertainment</option>
+              <option value="Metal Fabrication">Metal Fabrication</option>
+              <option value="Mining &amp; Natural Resources">Mining &amp; Natural Resources</option>
+              <option value="Packaging">Packaging</option>
+              <option value="Pharmaceuticals &amp; Life Sciences">Pharmaceuticals &amp; Life Sciences</option>
+              <option value="Professional Services">Professional Services</option>
+              <option value="Real Estate Services">Real Estate Services</option>
+              <option value="SaaS &amp; Software">SaaS &amp; Software</option>
+              <option value="Security Services">Security Services</option>
+              <option value="Staffing &amp; Recruitment">Staffing &amp; Recruitment</option>
+              <option value="Telecommunications">Telecommunications</option>
+              <option value="Textiles &amp; Apparel">Textiles &amp; Apparel</option>
+              <option value="Waste Management">Waste Management</option>
+            </select>
+            <div class="hint">If your industry is not listed, describe your business below.</div>
+          </div>
+          <div class="form-group full">
+            <label for="f-description">Or describe your business</label>
+            <textarea id="f-description" name="business_description" placeholder="What does your company do? Describe your products, services, customers, and marketplace. The more context you provide, the more accurate the industry classification and valuation range." style="min-height:80px"></textarea>
+          </div>
+
+          <div class="full" style="border-top:1px solid rgba(237,235,228,.15);margin:.6rem 0 .2rem;grid-column:1/-1"></div>
+          <div class="full" style="grid-column:1/-1"><label style="display:block;font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:-.4rem">Your Information</label></div>
+
+          <div class="form-group">
+            <label for="f-name">Full name *</label>
+            <input type="text" id="f-name" name="name" placeholder="Full name" required />
+            <div class="err-msg">Please enter your name.</div>
+          </div>
+          <div class="form-group">
+            <label for="f-email">Email *</label>
+            <input type="email" id="f-email" name="email" placeholder="you@company.com" required />
+            <div class="err-msg">Please enter a valid email address.</div>
+          </div>
+          <div class="form-group">
+            <label for="f-company">Company name *</label>
+            <input type="text" id="f-company" name="company" placeholder="Company name" required />
+            <div class="err-msg">Please enter your company name.</div>
+          </div>
+          <div class="form-group">
+            <label for="f-phone">Phone</label>
+            <input type="tel" id="f-phone" name="phone" placeholder="(555) 555-5555" />
+          </div>
+
+          <div class="form-check">
+            <input type="checkbox" id="f-consent" name="consent" value="Yes" required />
+            <label for="f-consent">I understand this is a preliminary assessment based on market data, not a formal valuation. Results will be reviewed by The Walton Group, Inc. and an advisor may contact me. *</label>
+          </div>
+          <div class="form-submit">
+            <button type="submit" class="btn btn-primary" id="submitBtn">Generate my valuation assessment <span class="arr">&rarr;</span></button>
+            <span class="note">* Required fields</span>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <a href="/" class="lockup" aria-label="SmartExitPlan home">
+          <svg class="mark" viewBox="0 0 48 48" aria-hidden="true">
+            <rect x="4" y="32" width="7" height="12" rx="2" fill="#EDEBE4"/>
+            <rect x="15" y="25" width="7" height="19" rx="2" fill="#EDEBE4"/>
+            <rect x="26" y="17" width="7" height="27" rx="2" fill="#EDEBE4"/>
+            <rect x="37" y="8" width="7" height="36" rx="2" fill="#C8963E"/>
+            <path d="M7.5 31 L18.5 24 L29.5 16 L40.5 8" fill="none" stroke="#DDB36A" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="40.5" cy="8" r="3.6" fill="#141E36" stroke="#DDB36A" stroke-width="2.1"/>
+          </svg>
+          <span class="word"><b>SmartExitPlan</b><span class="tag">Exit Readiness, Systematized</span></span>
+        </a>
+        <p>The exit, turned into a managed system. Built to close the gap between what your business is worth today and what it could command at exit.</p>
+      </div>
+      <div class="foot-col">
+        <h4>The System</h4>
+        <a href="/#system">The Seven Phases</a>
+        <a href="/#intangibles">Intangible Capital</a>
+        <a href="/#diagnostic">Value Gap Assessment</a>
+        <a href="/#tiers">Automated &amp; Advisory</a>
+        <a href="/#outcomes">Outcomes</a>
+      </div>
+      <div class="foot-col">
+        <h4>Get Started</h4>
+        <a href="/assess">Start the assessment</a>
+        <a href="/#start">Talk to an advisor</a>
+        <a href="/#who">Is it right for me</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <div class="credit">Built on <a href="https://www.waltongroup.net" target="_blank" rel="noopener" style="color:var(--gold-lt);text-decoration:underline;text-underline-offset:2px"><b>The Walton Group&rsquo;s</b></a> Exit Readiness System &middot; <a href="https://www.waltongroup.net" target="_blank" rel="noopener" style="color:var(--gold-lt);text-decoration:underline;text-underline-offset:2px">The Walton Group, Inc.</a> &middot; Advisors to Senior Leaders</div>
+      <div class="legal">&copy; 2026 SmartExitPlan &middot; SmartExitPlan.com</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const nav=document.getElementById('nav');
+  const onScroll=()=>nav.classList.toggle('scrolled',window.scrollY>40);
+  onScroll();window.addEventListener('scroll',onScroll,{passive:true});
+
+  const menuBtn=document.getElementById('menuBtn');
+  const navlinks=document.getElementById('navlinks');
+  menuBtn.addEventListener('click',()=>{const open=navlinks.classList.toggle('open');menuBtn.setAttribute('aria-expanded',open);});
+  navlinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>navlinks.classList.remove('open')));
+
+  /* Assessment form handling */
+  const form=document.getElementById('assessForm');
+  const formWrap=document.getElementById('formWrap');
+  const formSuccess=document.getElementById('formSuccess');
+  const assessLoading=document.getElementById('assessLoading');
+  const loaderMsg=document.getElementById('loaderMsg');
+  const submitBtn=document.getElementById('submitBtn');
+
+  const loadingMessages=[
+    'Analyzing your industry...',
+    'Pulling market valuation data...',
+    'Calculating multiple ranges...',
+    'Identifying value drivers...',
+    'Building your assessment...',
+    'Generating PDF report...',
+    'Almost ready...'
+  ];
+
+  if(form){
+    form.addEventListener('submit',function(e){
+      e.preventDefault();
+      let valid=true;
+
+      form.querySelectorAll('[required]').forEach(el=>{
+        el.classList.remove('error');
+        if(!el.value.trim()||(el.type==='email'&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value))||(el.type==='checkbox'&&!el.checked)){
+          el.classList.add('error');valid=false;
+        }
+      });
+
+      const industry=form.querySelector('[name="industry"]').value;
+      const desc=form.querySelector('[name="business_description"]').value.trim();
+      if(!industry && !desc){
+        form.querySelector('[name="industry"]').classList.add('error');
+        form.querySelector('[name="business_description"]').classList.add('error');
+        valid=false;
+      }
+
+      if(!valid){
+        const first=form.querySelector('.error');
+        if(first)first.scrollIntoView({behavior:'smooth',block:'center'});
+        return;
+      }
+
+      submitBtn.disabled=true;
+      formWrap.classList.add('hidden');
+      assessLoading.classList.add('show');
+      assessLoading.scrollIntoView({behavior:'smooth',block:'center'});
+
+      let msgIdx=0;
+      const msgTimer=setInterval(()=>{
+        msgIdx++;
+        if(msgIdx<loadingMessages.length) loaderMsg.textContent=loadingMessages[msgIdx];
+      },4000);
+
+      const payload={
+        revenue:form.querySelector('[name="revenue"]').value,
+        ebitda:form.querySelector('[name="ebitda"]').value,
+        industry:industry||'',
+        business_description:desc||'',
+        name:form.querySelector('[name="name"]').value.trim(),
+        email:form.querySelector('[name="email"]').value.trim(),
+        company:form.querySelector('[name="company"]').value.trim(),
+        phone:(form.querySelector('[name="phone"]').value||'').trim()
+      };
+
+      fetch('/api/assess',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(payload)
+      })
+        .then(r=>{
+          clearInterval(msgTimer);
+          if(r.ok){
+            assessLoading.classList.remove('show');
+            formSuccess.classList.add('show');
+            formSuccess.scrollIntoView({behavior:'smooth',block:'center'});
+          }else{
+            return r.json().then(d=>{throw new Error(d.error||'Assessment failed');});
+          }
+        })
+        .catch(err=>{
+          clearInterval(msgTimer);
+          assessLoading.classList.remove('show');
+          formWrap.classList.remove('hidden');
+          submitBtn.disabled=false;
+          alert('Something went wrong: '+err.message+'. Please try again or email randy@waltongroup.net directly.');
+        });
+    });
+    form.querySelectorAll('[required]').forEach(el=>{
+      el.addEventListener('input',()=>el.classList.remove('error'));
+      el.addEventListener('change',()=>el.classList.remove('error'));
+    });
+    form.querySelector('[name="industry"]').addEventListener('change',()=>{
+      form.querySelector('[name="industry"]').classList.remove('error');
+      form.querySelector('[name="business_description"]').classList.remove('error');
+    });
+    form.querySelector('[name="business_description"]').addEventListener('input',()=>{
+      form.querySelector('[name="industry"]').classList.remove('error');
+      form.querySelector('[name="business_description"]').classList.remove('error');
+    });
+  }
+</script>
+
+</body>
+</html>
