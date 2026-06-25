@@ -39,7 +39,15 @@ function fmtDate() {
   return new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 }
 
+// Strip control chars for pdf-lib WinAnsi safety
+function safe(t) {
+  if (!t) return '';
+  return String(t).replace(/[\x00-\x1F\x7F]/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
 function wrapText(text, font, fontSize, maxWidth) {
+  if (!text) return [''];
+  text = safe(text);
   if (!text) return [''];
   const words = text.split(' ');
   const lines = [];
@@ -274,7 +282,7 @@ async function generatePDF(analysis, inputs) {
   y2 -= 10;
   p2.drawRectangle({ x: ML, y: y2, width: CW, height: 0.5, color: LTGRAY });
   y2 -= 22;
-  p2.drawText('SIZE TIER: ' + analysis.size_tier.tier_name.toUpperCase(), { x: ML, y: y2, size: 8, font: helvB, color: NAVY, characterSpacing: 0.5 });
+  p2.drawText('SIZE TIER: ' + safe(analysis.size_tier.tier_name).toUpperCase(), { x: ML, y: y2, size: 8, font: helvB, color: NAVY, characterSpacing: 0.5 });
   y2 -= 16;
   y2 = drawWrapped(p2, analysis.size_tier.tier_description, ML, y2, { font: helv, fontSize: 9.5, color: GRAY, maxWidth: CW, lineHeight: 13 });
 
@@ -302,7 +310,7 @@ async function generatePDF(analysis, inputs) {
   // Outlook badge
   const rating = analysis.industry_outlook.outlook_rating || 'Neutral';
   const badgeColor = rating === 'Positive' ? GREEN : rating === 'Cautious' ? RED : GRAY;
-  p3.drawText('OUTLOOK: ' + rating.toUpperCase(), { x: ML, y: y3, size: 8, font: helvB, color: badgeColor, characterSpacing: 0.5 });
+  p3.drawText('OUTLOOK: ' + safe(rating).toUpperCase(), { x: ML, y: y3, size: 8, font: helvB, color: badgeColor, characterSpacing: 0.5 });
   y3 -= 18;
 
   // Industry outlook narrative
@@ -338,9 +346,9 @@ async function generatePDF(analysis, inputs) {
   for (const f of (analysis.multiple_drivers.expanding_factors || []).slice(0, 4)) {
     if (y3 < 80) break;
     p3.drawText('+', { x: ML, y: y3, size: 7, font: helv, color: GREEN });
-    p3.drawText(f.factor, { x: ML + 14, y: y3, size: 9.5, font: helvB, color: NAVY });
+    p3.drawText(safe(f.factor), { x: ML + 14, y: y3, size: 9.5, font: helvB, color: NAVY });
     const impactW = courier.widthOfTextAtSize(f.typical_impact, 7.5);
-    p3.drawText(f.typical_impact, { x: ML + CW - impactW, y: y3, size: 7.5, font: courier, color: GREEN });
+    p3.drawText(safe(f.typical_impact), { x: ML + CW - impactW, y: y3, size: 7.5, font: courier, color: GREEN });
     y3 -= 13;
     y3 = drawWrapped(p3, f.description, ML + 14, y3, { font: helv, fontSize: 8.5, color: GRAY, maxWidth: CW - 14, lineHeight: 11.5 });
     y3 -= 7;
@@ -354,9 +362,9 @@ async function generatePDF(analysis, inputs) {
     for (const f of (analysis.multiple_drivers.compressing_factors || []).slice(0, 4)) {
       if (y3 < 60) break;
       p3.drawText('-', { x: ML, y: y3, size: 7, font: helv, color: RED });
-      p3.drawText(f.factor, { x: ML + 14, y: y3, size: 9.5, font: helvB, color: NAVY });
+      p3.drawText(safe(f.factor), { x: ML + 14, y: y3, size: 9.5, font: helvB, color: NAVY });
       const impW = courier.widthOfTextAtSize(f.typical_impact, 7.5);
-      p3.drawText(f.typical_impact, { x: ML + CW - impW, y: y3, size: 7.5, font: courier, color: RED });
+      p3.drawText(safe(f.typical_impact), { x: ML + CW - impW, y: y3, size: 7.5, font: courier, color: RED });
       y3 -= 13;
       y3 = drawWrapped(p3, f.description, ML + 14, y3, { font: helv, fontSize: 8.5, color: GRAY, maxWidth: CW - 14, lineHeight: 11.5 });
       y3 -= 7;
